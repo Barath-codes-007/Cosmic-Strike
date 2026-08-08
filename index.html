@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<title>VOID RUNNER — Space Shooter</title>
+<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/menu.css">
+<link rel="stylesheet" href="css/game.css">
+</head>
+<body>
+
+<!-- ======================= BOOT / LOADING ======================= -->
+<div id="screen-boot" class="screen active">
+  <div class="boot-wrap">
+    <div class="boot-logo">VOID<span>RUNNER</span></div>
+    <div class="boot-bar"><div class="boot-bar-fill" id="boot-fill"></div></div>
+    <div class="boot-tip" id="boot-tip">Calibrating deflector arrays…</div>
+  </div>
+</div>
+
+<!-- ======================= MAIN MENU ======================= -->
+<div id="screen-menu" class="screen">
+  <canvas id="menu-bg"></canvas>
+  <div class="menu-content">
+    <div class="logo-block">
+      <div class="logo-main">VOID<span>RUNNER</span></div>
+      <div class="logo-sub">DEEP SIGNAL INCURSION</div>
+    </div>
+    <nav class="menu-nav">
+      <button class="menu-btn primary" data-nav="screen-modes">PLAY</button>
+      <button class="menu-btn" data-nav="screen-hangar">HANGAR</button>
+      <button class="menu-btn" data-nav="screen-shop">SHOP</button>
+      <button class="menu-btn" data-nav="screen-upgrades">UPGRADES</button>
+      <button class="menu-btn" data-nav="screen-achievements">ACHIEVEMENTS</button>
+      <button class="menu-btn" data-nav="screen-settings">SETTINGS</button>
+      <button class="menu-btn" data-nav="screen-howto">HOW TO PLAY</button>
+    </nav>
+    <div class="menu-footer">
+      <div class="stat-chip">LV <span id="menu-level">1</span></div>
+      <div class="stat-chip">⚙ <span id="menu-credits">0</span></div>
+      <div class="stat-chip">★ BEST <span id="menu-best">0</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- ======================= GAME MODES ======================= -->
+<div id="screen-modes" class="screen">
+  <div class="subscreen-wrap">
+    <h1 class="subscreen-title">SELECT MISSION</h1>
+    <div class="mode-grid">
+      <button class="mode-card" data-mode="story">
+        <div class="mode-icon">🪐</div>
+        <div class="mode-name">STORY MODE</div>
+        <div class="mode-desc">Progress through 6 sectors, each ending in a boss encounter.</div>
+      </button>
+      <button class="mode-card" data-mode="endless">
+        <div class="mode-icon">♾</div>
+        <div class="mode-name">ENDLESS MODE</div>
+        <div class="mode-desc">Waves scale forever. Chase the high score.</div>
+      </button>
+      <button class="mode-card" data-mode="bossrush">
+        <div class="mode-icon">👹</div>
+        <div class="mode-name">BOSS RUSH</div>
+        <div class="mode-desc">Fight all bosses back-to-back with no downtime.</div>
+      </button>
+      <button class="mode-card" data-mode="survival">
+        <div class="mode-icon">⏱</div>
+        <div class="mode-name">SURVIVAL</div>
+        <div class="mode-desc">One life. No shield regen. How long can you last?</div>
+      </button>
+      <button class="mode-card" data-mode="challenge">
+        <div class="mode-icon">🎯</div>
+        <div class="mode-name">CHALLENGE</div>
+        <div class="mode-desc">A fixed, hand-tuned gauntlet. Same seed for everyone.</div>
+      </button>
+    </div>
+    <button class="back-btn" data-nav="screen-menu">← BACK</button>
+  </div>
+</div>
+
+<!-- ======================= HANGAR ======================= -->
+<div id="screen-hangar" class="screen">
+  <div class="subscreen-wrap">
+    <h1 class="subscreen-title">HANGAR</h1>
+    <div class="hangar-layout">
+      <div class="hangar-preview">
+        <canvas id="hangar-canvas" width="300" height="300"></canvas>
+        <div class="ship-name" id="hangar-ship-name">SCOUT</div>
+        <div class="ship-arrows">
+          <button id="hangar-prev" class="arrow-btn">◀</button>
+          <button id="hangar-next" class="arrow-btn">▶</button>
+        </div>
+      </div>
+      <div class="hangar-stats" id="hangar-stats"></div>
+    </div>
+    <button class="select-btn" id="hangar-select">SELECT SHIP</button>
+    <button class="back-btn" data-nav="screen-menu">← BACK</button>
+  </div>
+</div>
+
+<!-- ======================= SHOP ======================= -->
+<div id="screen-shop" class="screen">
+  <div class="subscreen-wrap">
+    <h1 class="subscreen-title">SHOP <span class="credits-tag">⚙ <span id="shop-credits">0</span></span></h1>
+    <div class="shop-tabs">
+      <button class="shop-tab active" data-tab="ships">SHIPS</button>
+      <button class="shop-tab" data-tab="weapons">WEAPONS</button>
+      <button class="shop-tab" data-tab="cosmetics">COSMETICS</button>
+    </div>
+    <div class="shop-grid" id="shop-grid"></div>
+    <button class="back-btn" data-nav="screen-menu">← BACK</button>
+  </div>
+</div>
+
+<!-- ======================= UPGRADES ======================= -->
+<div id="screen-upgrades" class="screen">
+  <div class="subscreen-wrap">
+    <h1 class="subscreen-title">PERMANENT UPGRADES <span class="credits-tag">⚙ <span id="upg-credits">0</span></span></h1>
+    <div class="upgrade-list" id="upgrade-list"></div>
+    <button class="back-btn" data-nav="screen-menu">← BACK</button>
+  </div>
+</div>
+
+<!-- ======================= ACHIEVEMENTS ======================= -->
+<div id="screen-achievements" class="screen">
+  <div class="subscreen-wrap">
+    <h1 class="subscreen-title">DAILY MISSIONS</h1>
+    <div class="ach-list" id="mission-list"></div>
+    <h1 class="subscreen-title" style="margin-top:26px;">ACHIEVEMENTS</h1>
+    <div class="ach-list" id="ach-list"></div>
+    <button class="back-btn" data-nav="screen-menu">← BACK</button>
+  </div>
+</div>
+
+<!-- ======================= SETTINGS ======================= -->
+<div id="screen-settings" class="screen">
+  <div class="subscreen-wrap">
+    <h1 class="subscreen-title">SETTINGS</h1>
+    <div class="settings-list">
+      <div class="setting-row">
+        <label>MUSIC VOLUME</label>
+        <input type="range" id="set-music" min="0" max="100" value="60">
+      </div>
+      <div class="setting-row">
+        <label>SFX VOLUME</label>
+        <input type="range" id="set-sfx" min="0" max="100" value="80">
+      </div>
+      <div class="setting-row">
+        <label>GRAPHICS QUALITY</label>
+        <select id="set-quality">
+          <option value="high">HIGH</option>
+          <option value="medium">MEDIUM</option>
+          <option value="low">LOW</option>
+        </select>
+      </div>
+      <div class="setting-row">
+        <label>SCREEN SHAKE</label>
+        <input type="checkbox" id="set-shake" checked>
+      </div>
+      <div class="setting-row">
+        <label>PARTICLE EFFECTS</label>
+        <input type="checkbox" id="set-particles" checked>
+      </div>
+      <div class="setting-row">
+        <label>MOBILE CONTROLS</label>
+        <select id="set-controls">
+          <option value="auto">AUTO-DETECT</option>
+          <option value="on">FORCE ON</option>
+          <option value="off">FORCE OFF</option>
+        </select>
+      </div>
+    </div>
+    <button class="back-btn" data-nav="screen-menu">← BACK</button>
+  </div>
+</div>
+
+<!-- ======================= HOW TO PLAY ======================= -->
+<div id="screen-howto" class="screen">
+  <div class="subscreen-wrap">
+    <h1 class="subscreen-title">HOW TO PLAY</h1>
+    <div class="howto-grid">
+      <div class="howto-card">
+        <h3>MOVEMENT</h3>
+        <p>WASD / Arrow Keys (desktop) or the virtual joystick (mobile) to move your ship in any direction.</p>
+      </div>
+      <div class="howto-card">
+        <h3>SHOOTING</h3>
+        <p>SPACE or Left Mouse (desktop) or the FIRE button (mobile). Hold to fire continuously.</p>
+      </div>
+      <div class="howto-card">
+        <h3>BOOST</h3>
+        <p>SHIFT or the BOOST button gives a burst of speed and brief invulnerability. Watch the energy meter.</p>
+      </div>
+      <div class="howto-card">
+        <h3>SPECIAL</h3>
+        <p>E or the SPECIAL button unleashes your ship's unique ability once energy is full.</p>
+      </div>
+      <div class="howto-card">
+        <h3>POWER-UPS</h3>
+        <p>Destroyed enemies sometimes drop power-ups. Fly into them to collect instantly.</p>
+      </div>
+      <div class="howto-card">
+        <h3>PAUSE</h3>
+        <p>P or the pause button freezes the action any time. Adjust settings mid-run.</p>
+      </div>
+    </div>
+    <button class="back-btn" data-nav="screen-menu">← BACK</button>
+  </div>
+</div>
+
+<!-- ======================= GAME SCREEN ======================= -->
+<div id="screen-game" class="screen">
+  <canvas id="game-canvas"></canvas>
+
+  <!-- HUD -->
+  <div id="hud">
+    <div class="hud-top-left">
+      <div class="bar-group">
+        <div class="bar hp-bar"><div class="bar-fill" id="hp-fill"></div></div>
+        <div class="bar shield-bar"><div class="bar-fill" id="shield-fill"></div></div>
+        <div class="bar energy-bar"><div class="bar-fill" id="energy-fill"></div></div>
+      </div>
+    </div>
+    <div class="hud-top-center">
+      <div id="wave-label">SECTOR 1 — WAVE 1</div>
+      <div id="boss-bar-wrap" class="hidden">
+        <div class="boss-name" id="boss-name">BOSS</div>
+        <div class="bar boss-bar"><div class="bar-fill" id="boss-fill"></div></div>
+      </div>
+    </div>
+    <div class="hud-top-right">
+      <div class="score-line">SCORE <span id="hud-score">0</span></div>
+      <div class="score-line combo" id="hud-combo">x1</div>
+    </div>
+    <button id="pause-btn">II</button>
+  </div>
+
+  <!-- Mobile controls -->
+  <div id="mobile-controls" class="hidden">
+    <div id="joystick-zone"><div id="joystick-base"><div id="joystick-nub"></div></div></div>
+    <div class="mobile-action-btns">
+      <button id="mob-special" class="mob-btn">E</button>
+      <button id="mob-boost" class="mob-btn">BOOST</button>
+      <button id="mob-fire" class="mob-btn fire">FIRE</button>
+    </div>
+  </div>
+</div>
+
+<!-- ======================= PAUSE OVERLAY ======================= -->
+<div id="screen-pause" class="screen overlay">
+  <div class="pause-panel">
+    <h1>PAUSED</h1>
+    <button class="menu-btn primary" id="resume-btn">RESUME</button>
+    <button class="menu-btn" id="restart-btn">RESTART</button>
+    <button class="menu-btn" data-nav="screen-settings">SETTINGS</button>
+    <button class="menu-btn" id="quit-btn">QUIT TO MENU</button>
+  </div>
+</div>
+
+<!-- ======================= GAME OVER ======================= -->
+<div id="screen-gameover" class="screen overlay">
+  <div class="pause-panel gameover-panel">
+    <h1 id="gameover-title">MISSION FAILED</h1>
+    <div class="go-stats" id="go-stats"></div>
+    <button class="menu-btn primary" id="retry-btn">RETRY</button>
+    <button class="menu-btn" id="go-menu-btn">MAIN MENU</button>
+  </div>
+</div>
+
+<!-- ======================= BOSS WARNING ======================= -->
+<div id="boss-warning" class="hidden">
+  <div class="warning-text">⚠ WARNING — HOSTILE SIGNATURE DETECTED ⚠</div>
+</div>
+
+<!-- ======================= LEVEL COMPLETE TOAST ======================= -->
+<div id="level-toast" class="hidden"></div>
+
+<script src="js/utils.js"></script>
+<script src="js/storage.js"></script>
+<script src="js/audio.js"></script>
+<script src="js/particles.js"></script>
+<script src="js/bullets.js"></script>
+<script src="js/weapons.js"></script>
+<script src="js/player.js"></script>
+<script src="js/powerups.js"></script>
+<script src="js/enemies.js"></script>
+<script src="js/bosses.js"></script>
+<script src="js/levels.js"></script>
+<script src="js/ui.js"></script>
+<script src="js/game.js"></script>
+<script src="js/main.js"></script>
+</body>
+</html>
