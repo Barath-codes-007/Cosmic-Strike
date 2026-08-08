@@ -103,6 +103,13 @@ python3 -m http.server 8080
 - **Tune difficulty:** wave scaling lives in `startWave()` and `Levels.generateWave()` in `js/game.js` / `js/levels.js`.
 
 ---
+# 🚀 Cosmic Strike
+
+A professional 2D space shooter game built with HTML5, CSS3, and JavaScript.
+
+## 🎮 Play the Game
+
+[▶️ Live Demo](https://barath-codes-007.github.io/Cosmic-Strike/)
 
 ## Deployment
 
